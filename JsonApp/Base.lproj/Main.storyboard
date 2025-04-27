@@ -124,6 +124,9 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="dz0-s8-pZ0" secondAttribute="bottom" id="u00-h5-AlJ"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="countryTableView" destination="dz0-s8-pZ0" id="ar5-OM-btW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

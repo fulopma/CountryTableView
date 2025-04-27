@@ -5,8 +5,8 @@
 //  Created by Marcell Fulop on 4/25/25.
 //
 
-import UIKit
 import Foundation
+import UIKit
 
 // 1. understand above JSON data
 // 2. create model from above Json data
@@ -38,20 +38,25 @@ struct Language: Decodable {
 class ViewController: UIViewController, UITableViewDataSource {
     var countries: [Country] = []
 
-   
-    
+    @IBOutlet weak var countryTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         countries = readCountriesJson()
+        countryTableView.dataSource = self
     }
-    
+
     func readCountriesJson() -> [Country] {
-        guard let url = Bundle.main.url(forResource: "countries", withExtension: "json") else {
+        guard
+            let url = Bundle.main.url(
+                forResource: "countries",
+                withExtension: "json"
+            )
+        else {
             print("File not found")
             abort()
         }
-        
+
         guard let data = try? Data(contentsOf: url) else {
             print("Cannot read file")
             abort()
@@ -60,13 +65,13 @@ class ViewController: UIViewController, UITableViewDataSource {
         do {
             let countries = try jsonDecorder.decode([Country].self, from: data)
             return countries
-        }
-        catch {
+        } catch {
             print("Error parsing json: \(error)")
             abort()
         }
-        
+
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
         -> Int {
         return countries.count
@@ -78,10 +83,20 @@ class ViewController: UIViewController, UITableViewDataSource {
             tableView.dequeueReusableCell(
                 withIdentifier: "countryCell",
                 for: indexPath
-            )
-        
-        return cell
+            ) as? CountryViewCell
+        cell?.countryCapitalLabel.text = countries[indexPath.row].capital
+        cell?.countryNameLabel.text = countries[indexPath.row].name
+        cell?.countryCodeLabel.text = countries[indexPath.row].code
+        cell?.countryFlagLabel.text = countries[indexPath.row].flag
+        cell?.countryRegionLabel.text = countries[indexPath.row].region
+        cell?.languageNameLabel.text = countries[indexPath.row].language.name
+        cell?.languageCodeLabel.text =
+            countries[indexPath.row].language.code ?? "N/A"
+        cell?.currencyNameLabel.text = countries[indexPath.row].currency.name
+        cell?.currencyCodeLabel.text = countries[indexPath.row].currency.code
+        cell?.currencySymbolLabel.text =
+            countries[indexPath.row].currency.symbol ?? "N/A"
+        return cell ?? UITableViewCell()
     }
 
 }
-
