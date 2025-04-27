@@ -27,21 +27,61 @@ struct Country: Decodable {
 struct Currency: Decodable {
     let code: String
     let name: String
-    let symbol: String
+    let symbol: String?
 }
 
 struct Language: Decodable {
-    let code: String
+    let code: String?
     let name: String
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource {
+    var countries: [Country] = []
 
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        countries = readCountriesJson()
+    }
+    
+    func readCountriesJson() -> [Country] {
+        guard let url = Bundle.main.url(forResource: "countries", withExtension: "json") else {
+            print("File not found")
+            abort()
+        }
+        
+        guard let data = try? Data(contentsOf: url) else {
+            print("Cannot read file")
+            abort()
+        }
+        let jsonDecorder = JSONDecoder()
+        do {
+            let countries = try jsonDecorder.decode([Country].self, from: data)
+            return countries
+        }
+        catch {
+            print("Error parsing json: \(error)")
+            abort()
+        }
+        
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
+        -> Int {
+        return countries.count
     }
 
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell {
+        let cell =
+            tableView.dequeueReusableCell(
+                withIdentifier: "countryCell",
+                for: indexPath
+            )
+        
+        return cell
+    }
 
 }
 
