@@ -46,6 +46,8 @@ class ViewController: UIViewController, UITableViewDataSource {
         countryTableView.dataSource = self
     }
 
+    /// Read the contents of a `countries.json` file. If there is any failure, this function will fail and take
+    /// the app with it.
     func readCountriesJson() -> [Country] {
         guard
             let url = Bundle.main.url(
