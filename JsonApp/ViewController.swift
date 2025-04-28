@@ -27,7 +27,6 @@ struct Country: Decodable {
 struct Currency: Decodable {
     let code: String
     let name: String
-    
     let symbol: String?
 }
 
