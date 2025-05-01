@@ -35,43 +35,44 @@ struct Language: Decodable {
     let name: String
 }
 
-class ViewController: UIViewController, UITableViewDataSource {
+/// When conforming multiple protocols, try to conform one protocol at a time inside a separate a extension
+class CountryListViewController: UIViewController, UITableViewDataSource {
     var countries: [Country] = []
 
     @IBOutlet weak var countryTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        countries = readCountriesJson()
+        readCountriesJson()
         countryTableView.dataSource = self
     }
 
     /// Read the contents of a `countries.json` file. If there is any failure, this function will fail and take
     /// the app with it.
-    func readCountriesJson() -> [Country] {
-        guard
-            let url = Bundle.main.url(
-                forResource: "countries",
-                withExtension: "json"
-            )
-        else {
-            print("File not found")
+    func readCountriesJson() {
+        guard let url = URL(string: "https://gist.githubusercontent.com/peymano-wmt/32dcb892b06648910ddd40406e37fdab/raw/db25946fd77c5873b0303b858e861ce724e0dcd0/countries.json") else {
+            print("Failed to parse URL.")
             abort()
         }
-
-        guard let data = try? Data(contentsOf: url) else {
-            print("Cannot read file")
-            abort()
+        let session = URLSession.shared
+        let datatask = session.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                return
+            }
+            let jsonDecoder = JSONDecoder()
+            do {
+                self.countries = try jsonDecoder.decode([Country].self, from: data)
+                print(self.countries)
+                
+                DispatchQueue.main.async {
+                    self.countryTableView.reloadData()
+                }
+            }catch {
+                print("\(error)")
+                abort()
+            }
         }
-        let jsonDecorder = JSONDecoder()
-        do {
-            let countries = try jsonDecorder.decode([Country].self, from: data)
-            return countries
-        } catch {
-            print("Error parsing json: \(error)")
-            abort()
-        }
-
+        datatask.resume()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
@@ -86,18 +87,10 @@ class ViewController: UIViewController, UITableViewDataSource {
                 withIdentifier: "countryCell",
                 for: indexPath
             ) as? CountryViewCell
+            
         cell?.countryCapitalLabel.text = countries[indexPath.row].capital
         cell?.countryNameLabel.text = countries[indexPath.row].name
         cell?.countryCodeLabel.text = countries[indexPath.row].code
-        cell?.countryFlagLabel.text = countries[indexPath.row].flag
-        cell?.countryRegionLabel.text = countries[indexPath.row].region
-        cell?.languageNameLabel.text = countries[indexPath.row].language.name
-        cell?.languageCodeLabel.text =
-            countries[indexPath.row].language.code ?? "N/A"
-        cell?.currencyNameLabel.text = countries[indexPath.row].currency.name
-        cell?.currencyCodeLabel.text = countries[indexPath.row].currency.code
-        cell?.currencySymbolLabel.text =
-            countries[indexPath.row].currency.symbol ?? "N/A"
         return cell ?? UITableViewCell()
     }
 
