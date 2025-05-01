@@ -98,13 +98,13 @@
         <!--Country Details View Controller-->
         <scene sceneID="cUk-au-aKf">
             <objects>
-                <viewController id="90B-lH-0xY" customClass="CountryDetailsViewController" customModule="JsonApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CountryDetailsViewController" id="90B-lH-0xY" customClass="CountryDetailsViewController" customModule="JsonApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aFg-hW-qnI">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Country Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eE5-dp-n9c">
-                                <rect key="frame" x="10" y="372.33333333333331" width="175.33333333333334" height="33.666666666666686"/>
+                                <rect key="frame" x="10" y="372.33333333333331" width="373" height="33.666666666666686"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -133,6 +133,7 @@
                             <constraint firstItem="XII-Wv-ez2" firstAttribute="top" secondItem="eE5-dp-n9c" secondAttribute="bottom" constant="10" id="KOh-rQ-trf"/>
                             <constraint firstItem="XII-Wv-ez2" firstAttribute="centerY" secondItem="aFg-hW-qnI" secondAttribute="centerY" id="Q86-gp-uot"/>
                             <constraint firstItem="CNk-W0-OOH" firstAttribute="leading" secondItem="cE3-Qd-GAe" secondAttribute="leading" constant="10" id="TXp-Hf-gbx"/>
+                            <constraint firstItem="cE3-Qd-GAe" firstAttribute="trailing" secondItem="eE5-dp-n9c" secondAttribute="trailing" constant="10" id="nd8-BX-SRL"/>
                             <constraint firstItem="XII-Wv-ez2" firstAttribute="leading" secondItem="cE3-Qd-GAe" secondAttribute="leading" constant="10" id="pEi-MA-8aL"/>
                             <constraint firstItem="eE5-dp-n9c" firstAttribute="leading" secondItem="cE3-Qd-GAe" secondAttribute="leading" constant="10" id="qhH-uI-geS"/>
                         </constraints>

@@ -43,13 +43,14 @@ class CountryListViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        readCountriesJson()
+        callApiForCountries()
         countryTableView.dataSource = self
+        countryTableView.delegate = self
     }
 
     /// Read the contents of a `countries.json` file. If there is any failure, this function will fail and take
     /// the app with it.
-    func readCountriesJson() {
+    func callApiForCountries() {
         guard let url = URL(string: "https://gist.githubusercontent.com/peymano-wmt/32dcb892b06648910ddd40406e37fdab/raw/db25946fd77c5873b0303b858e861ce724e0dcd0/countries.json") else {
             print("Failed to parse URL.")
             abort()
@@ -62,7 +63,6 @@ class CountryListViewController: UIViewController, UITableViewDataSource {
             let jsonDecoder = JSONDecoder()
             do {
                 self.countries = try jsonDecoder.decode([Country].self, from: data)
-                print(self.countries)
                 
                 DispatchQueue.main.async {
                     self.countryTableView.reloadData()
@@ -94,4 +94,17 @@ class CountryListViewController: UIViewController, UITableViewDataSource {
         return cell ?? UITableViewCell()
     }
 
+}
+
+extension CountryListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        guard let vc = sb.instantiateViewController(withIdentifier: "CountryDetailsViewController")
+                as? CountryDetailsViewController else{
+            return
+        }
+        vc.country = countries[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
