@@ -8,12 +8,6 @@
 import Foundation
 import UIKit
 
-// 1. understand above JSON data
-// 2. create model from above Json data
-// 3.  store json data locally in .json file
-// 4. read the local json file and parese json data using JSONDecoder
-// 5. populate read countries data into table view.
-
 struct Country: Decodable {
     let capital: String
     let code: String
@@ -44,12 +38,11 @@ class CountryListViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         callApiForCountries()
+        
         countryTableView.dataSource = self
         countryTableView.delegate = self
     }
 
-    /// Read the contents of a `countries.json` file. If there is any failure, this function will fail and take
-    /// the app with it.
     func callApiForCountries() {
         guard let url = URL(string: "https://gist.githubusercontent.com/peymano-wmt/32dcb892b06648910ddd40406e37fdab/raw/db25946fd77c5873b0303b858e861ce724e0dcd0/countries.json") else {
             print("Failed to parse URL.")
@@ -63,8 +56,8 @@ class CountryListViewController: UIViewController, UITableViewDataSource {
             let jsonDecoder = JSONDecoder()
             do {
                 self.countries = try jsonDecoder.decode([Country].self, from: data)
-                
                 DispatchQueue.main.async {
+                    self.countries.sort(by: { $0.name < $1.name } )
                     self.countryTableView.reloadData()
                 }
             }catch {
