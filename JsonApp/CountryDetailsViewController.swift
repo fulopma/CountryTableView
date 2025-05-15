@@ -10,8 +10,8 @@ import UIKit
 class CountryDetailsViewController: UIViewController {
 
     var country: Country?
-    @IBOutlet weak var countryNameLabel: UILabel!
     
+    @IBOutlet weak var countryNameLabel: UILabel!
     @IBOutlet weak var countryDetailsLabel: UILabel!
     @IBOutlet weak var countryFlagLabel: UILabel!
     
@@ -19,7 +19,6 @@ class CountryDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
         guard let _country = country else {
             print("No country value passed.")
             abort()
